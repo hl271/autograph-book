@@ -16,7 +16,8 @@
     "foreman": "2.0.0",
     "method-override": "^2.3.10",
     "mongodb": "^3.1.0-beta4",
-    "mongoose": "^5.1.1"
+    "mongoose": "^5.1.1",
+    "newrelic": "^4.1.1"
   },
   "engines": {
     "node": "8.9.3",

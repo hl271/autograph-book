@@ -3,7 +3,7 @@ var express = require('express'),
 	methodOverride = require('method-override'),
 	bodyParser = require('body-parser')
 var app = express()
-var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/teacher-note-demo',
+var url = process.env.DATABASE_URL || 'mongodb://localhost:27017/teacher-note-demo',
 	port = process.env.PORT || 2000
 
 var controller = require('./controller/mainController')()

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="The digital class note">
+	<meta name="author" content="Lan Dang">
+
+	<title>A Journey ahead - <%=teacher.name%></title>
+
+	<link rel="stylesheet" href="">
+	<link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+
+	<!-- Include external CSS. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+
+	<style type="text/css">
+		#avatar { }
+	</style>
+</head>
+<body>
+	<div class="jumbotron jumbotron-fluid bg-dark text-white">
+	  <div class="container">
+	    <h1 class="display-4">The Schoolbook</h1>
+	    <p class="lead">All memories are worth cherished..</p>
+	  </div>
+	</div>
+	<div class="container">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+			  <a href="/">Home</a>
+			</li>
+			<li class="breadcrumb-item">
+				<a href="/<%=teacher._id%>"><%=teacher.name%></a>
+			</li>
+		</ol>
+
+		<div class="row mb-4">
+			<div class="col-md-5 text-center">
+				<img style="width: auto; height: 10rem" class="mx-auto" src=<%=teacher.img%>>			
+			</div>
+			<div class="col-md-7">
+				<h3><%=teacher.name%></h3>
+				<h6>Teaches: <%=teacher.field%></h6>
+				<a href="/#send-note" class="btn btn-primary btn-lg">Send notes</a>
+			</div>
+		</div>
+
+		<h2><%=teacher.name%>'s Notes</h2><hr>
+		<div class="section--notes">
+			<%teacher.studentNotes.forEach(function(note, index) {%>
+				<div class="card mb-4" id="<%=note._id%>">				  
+				  <div class="card-body">
+				    <h3 class="card-title"><%=note.author%> - <%=note.class%></h5>
+				    <%if (note.private) {%>
+				    	<h5 class="text-danger">Private Content</h5>
+				    <%} else{%>
+				    	<div class="fr-view"><%-note.note%></div>
+				    <%}%>			    
+				  </div>
+				  <div class="card-footer text-muted">
+				  	<div class="row">
+				  		<div class="col-md-8">
+					  		Last updated: <%=note.date%>
+					  	</div>			  	
+					    <div class="col-md-4">
+					    	<button class="btn btn-danger float-right mx-1" data-toggle="modal" data-target="#deleteModal<%=index%>">
+					    		Delete
+					    	</button>
+					    	<button class="btn btn-primary float-right mx-1" data-toggle="modal" data-target="#editModal<%=index%>">
+					    		Edit
+					    	</button>
+					    </div>
+				  	</div>			    
+				  </div>
+				</div>
+				<!-- MODALS -->
+				<!-- DeleteModal -->
+				<div class="modal fade" id="deleteModal<%=index%>" tabindex="-1" role="dialog" aria-labelledby="delete<%=index%>" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="delete<%=index%>">Delete note</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+
+						<form action="/note/delete" method="POST">						  
+						  <div class="form-group">
+						    <label for="deleteCode<%=index%>">Secret Code</label>
+						    <input type="password" class="form-control" name="code" id="deleteCode<%=index%>" placeholder="Your code" required>
+						  </div>
+						  <input type="hidden" name="teacher_id" value=<%=teacher._id%>>
+						  <input type="hidden" name="note_id" value=<%=note._id%>>
+						  <button type="submit" class="btn btn-danger">Delete</button>
+						</form>
+
+				      </div>				      
+				    </div>
+				  </div>
+				</div>
+				<!-- EditModal -->
+				<div class="modal modal-edit fade" id="editModal<%=index%>" tabindex="-1" role="dialog" aria-labelledby="edit<%=index%>" aria-hidden="true">
+				  <div class="modal-dialog modal-lg" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="edit<%=index%>">Edit note</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+
+						<form action="/note/edit" method="POST">
+						  <div class="form-row">
+						    <div class="form-group col-md-9">
+						      <label for="name<%=index%>">Name</label>
+						      <input type="text" class="form-control" name="author" id="name<%=index%>" value="<%=note.author%>" required>
+						    </div>
+						    <div class="form-group col-md-3">
+						      <label for="class<%=index%>">Class</label>
+						      <select id="class<%=index%>" class="form-control" name="class" required>
+						        <option selected value="">Choose...</option>
+						        <option>A49</option>
+						        <option>M49</option>
+						        <option>P49</option>
+						        <option>B49</option>
+						        <option>C49</option>
+						        <option>Q49</option>
+						        <option>D49</option>
+						        <option>E49</option>
+						        <option>V49</option>
+						        <option>T49</option>
+						        <option>I49</option>
+						        <option>K49</option>
+						        <option>N49</option>
+						      </select>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="teacher">To Teacher</label>
+						    <input class="form-control" type="text" placeholder="<%=teacher.name%>"readonly>
+						  </div>
+						  <div class="form-group">
+						    <label for="editCode<%=index%>">Secret Code</label>
+						    <input type="password" class="form-control" name="secretCode" id="editCode<%=index%>" placeholder="Your code" required>
+						  </div>
+						  <div class="form-group">
+						    <label for="note<%=index%>">Your thought</label>
+						    <textarea class="form-control" id="note<%=index%>" name="note" rows="5" required><%=note.private ? '' : note.note%></textarea>
+						  </div>
+
+
+						  <div class="form-group">
+						    <div class="form-check">
+						      <input class="form-check-input" type="checkbox" id="private<%=index%>" name="private">
+						      <label class="form-check-label" for="private<%=index%>">
+						        Make my note private
+						      </label>
+						    </div>
+						  </div>
+
+						  <input type="hidden" name="teacher_id" value=<%=teacher._id%>>
+						  <input type="hidden" name="note_id" value=<%=note._id%>>
+
+						  <button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+
+				      </div>				      
+				    </div>
+				  </div>
+				</div>
+			<%})%>
+		</div>
+
+	</div>
+	<!-- Footer -->
+    <footer class="py-5 mt-3 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+	
+	<!-- SCRIPT-->
+	<script type="text/javascript" src="/libs/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Include external JS libs. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+ 
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/js/froala_editor.pkgd.min.js"></script>
+
+    <script type="text/javascript">
+    	// when any modal is opening
+		$('.modal.modal-edit').on('show.bs.modal', function (e) {
+		  $(this).find('textarea').froalaEditor({
+    	 	toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
+    	 	quickInsertButtons: false
+    	 })
+		})
+
+		// when any modal is closing
+		$('.modal.modal-edit').on('hide.bs.modal', function (e) {
+		  $(this).find('textarea').froalaEditor('destroy')
+		})
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="The digital class note">
+	<meta name="author" content="Lan Dang">
+
+	<title>A Journey ahead</title>
+
+	<link rel="stylesheet" href="">
+	<link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+
+	<!-- Include external CSS. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="jumbotron jumbotron-fluid bg-dark text-white">
+	  <div class="container">
+	    <h1 class="display-4">The Schoolbook</h1>
+	    <p class="lead">All memories are worth cherished..</p>
+	  </div>
+	</div>
+	<div class="container">		
+		<!-- Team Members -->
+		<h2>Our Beloved Teacher</h2><hr>
+
+		<div class="row">
+			<%teachers.forEach(function(teacher) {%>
+				<div class="col-md-3 mb-4">
+				  <div class="card h-100 text-center">
+				    <img class="card-img-top" src=<%=teacher.img%> alt="Teacher's image">
+				    <div class="card-body">
+				      <h4 class="card-title"><%=teacher.name%></h4>
+				      <h6 class="card-subtitle mb-2 text-muted">Teaches: <%=teacher.field%></h6>
+				      <a href="/teacher/<%=teacher._id%>" class="btn btn-primary">See Notes</a>
+				    </div>				    
+				  </div>
+				</div>
+			<%})%>
+			
+			
+		</div>
+		<!-- /.row -->
+		<div class="section--form border border-secondary bg-dark text-white rounded p-4">
+			<h2 id="send-note">Say something to your beloved teacher</h2><hr>
+			<form action="/note" method="POST">
+			  <div class="form-row">
+			    <div class="form-group col-md-9">
+			      <label for="name">Name</label>
+			      <input type="text" class="form-control" name="name" id="name" placeholder="Your name here" required>
+			    </div>
+			    <div class="form-group col-md-3">
+			      <label for="class">Class</label>
+			      <select id="class" class="form-control" name="class" required>
+			        <option selected value="">Choose...</option>
+			        <option>A49</option>
+			        <option>M49</option>
+			        <option>P49</option>
+			        <option>B49</option>
+			        <option>C49</option>
+			        <option>Q49</option>
+			        <option>D49</option>
+			        <option>E49</option>
+			        <option>V49</option>
+			        <option>T49</option>
+			        <option>I49</option>
+			        <option>K49</option>
+			        <option>N49</option>
+			      </select>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="teacher">To Teacher</label>
+			    <select id="teacher" class="form-control" name="teacher_id" required>
+			      <option selected value="">Choose...</option>
+			      <%teachers.forEach(function(teacher) {%>
+					<option value=<%=teacher._id%>><%=teacher.name%></option>
+			      <%})%>
+			    </select>
+			  </div>
+			  <div class="form-group">
+			    <label for="code">Secret Code</label>
+			    <input type="password" class="form-control" name="code" id="code" placeholder="Your code" required>
+			  </div>
+			  <div class="form-group">
+			    <label for="note">Your thought</label>
+			    <textarea class="form-control noteArea" id="note" name="note" rows="15" required></textarea>
+			  </div>
+			  <div class="form-group">
+			    <div class="form-check">
+			      <input class="form-check-input" type="checkbox" id="private" name="private">
+			      <label class="form-check-label" for="private">
+			        Make my note private
+			      </label>
+			    </div>
+			  </div>
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+		
+	</div>
+	<!-- Footer -->
+    <footer class="py-5 mt-3 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+	<!-- SCRIPT-->
+	<script type="text/javascript" src="/libs/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Include external JS libs. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+ 
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/js/froala_editor.pkgd.min.js"></script>
+
+    <!-- Initialize the editor. -->
+    <script>
+    	$(function() {
+    	 $('.noteArea').froalaEditor({
+    	 	toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
+    	 	quickInsertButtons: false
+    	 }) 
+    	}); 
+ 	</script>
+</body>
+</html>

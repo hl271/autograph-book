@@ -7,7 +7,6 @@
 	<meta name="author" content="Lan Dang">
 
 	<title>A Journey ahead - <%=teacher.name%></title>
-
 	<link rel="stylesheet" href="">
 	<link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
 
@@ -205,7 +204,7 @@
     	// when any modal is opening
 		$('.modal.modal-edit').on('show.bs.modal', function (e) {
 		  $(this).find('textarea').froalaEditor({
-    	 	toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'embedly', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
+    	 	toolbarButtons: ['bold', 'italic', 'underline', '|', 'fontSize', 'color', '|', 'paragraphFormat', 'quote', 'insertImage', 'embedly', '|', 'emoticons', 'clearFormatting', '|', 'undo', 'redo'],
     	 	quickInsertButtons: false
     	 })
 		})

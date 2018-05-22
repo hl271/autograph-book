@@ -19,10 +19,32 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
 
 	<style type="text/css">
-		#avatar { }
 	</style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a href="/" class="navbar-brand">The Autograph Book</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="navbar-nav ml-auto">
+				<%if (!!user) {%>
+					<li class="nav-item">
+							<a href="/admin/teacher" class="nav-link"><%=user.username%>'s Dashboard</a>
+					</li>
+					<li class="nav-item">
+						<a href="/admin/teacher/logout" class="nav-link">Log out</a>
+					</li>
+				<%} else {%>
+					<li class="nav-item">
+							<a href="/admin/teacher/login" class="nav-link">Login as teacher</a>
+					</li>
+				<%}%>				
+			</div>
+		</div>
+	</nav>
 	<div class="jumbotron jumbotron-fluid bg-dark text-white">
 	  <div class="container">
 	    <h1 class="display-4">The autograph book</h1>
@@ -35,7 +57,7 @@
 			  <a href="/">Home</a>
 			</li>
 			<li class="breadcrumb-item">
-				<a href="/<%=teacher._id%>"><%=teacher.name%></a>
+				<a href="/<%=teacher._id%>"><%=teacher.username%></a>
 			</li>
 		</ol>
 
@@ -44,15 +66,15 @@
 				<img style="width: auto; height: 10rem" class="mx-auto" src=<%=teacher.img%>>			
 			</div>
 			<div class="col-md-7">
-				<h3><%=teacher.name%></h3>
+				<h3><%=teacher.username%></h3>
 				<h6>Teaches: <%=teacher.field%></h6>
 				<a href="/#send-note" class="btn btn-primary btn-lg">Send notes</a>
 			</div>
 		</div>
 
-		<h2><%=teacher.name%>'s Notes</h2><hr>
+		<h2><%=teacher.username%>'s Notes</h2><hr>
 		<div class="section--notes">
-			<%teacher.studentNotes.forEach(function(note, index) {%>
+			<%teacher.studentNotes.reverse().forEach(function(note, index) {%>
 				<div class="card mb-4" id="<%=note._id%>">				  
 				  <div class="card-body">
 				    <h3 class="card-title"><%=note.author%> - <%=note.class%></h5>
@@ -91,15 +113,15 @@
 				      </div>
 				      <div class="modal-body">
 
-						<form action="/note/delete" method="POST">						  
-						  <div class="form-group">
-						    <label for="deleteCode<%=index%>">Secret Code</label>
-						    <input type="password" class="form-control" name="code" id="deleteCode<%=index%>" placeholder="Your code" required>
-						  </div>
-						  <input type="hidden" name="teacher_id" value=<%=teacher._id%>>
-						  <input type="hidden" name="note_id" value=<%=note._id%>>
-						  <button type="submit" class="btn btn-danger">Delete</button>
-						</form>
+								<form action="/note/delete" method="POST">						  
+									<div class="form-group">
+										<label for="deleteCode<%=index%>">Secret Code</label>
+										<input type="password" class="form-control" name="code" id="deleteCode<%=index%>" placeholder="Your code" required>
+									</div>
+									<input type="hidden" name="teacher_id" value=<%=teacher._id%>>
+									<input type="hidden" name="note_id" value=<%=note._id%>>
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
 
 				      </div>				      
 				    </div>
@@ -145,7 +167,7 @@
 						  </div>
 						  <div class="form-group">
 						    <label for="teacher">To Teacher</label>
-						    <input class="form-control" type="text" placeholder="<%=teacher.name%>"readonly>
+						    <input class="form-control" type="text" placeholder="<%=teacher.username%>"readonly>
 						  </div>
 						  <div class="form-group">
 						    <label for="editCode<%=index%>">Secret Code</label>

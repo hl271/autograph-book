@@ -1,4 +1,5 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose'),
+	passport = require('passport')
 var Teacher = require('../model/teacher')
 
 var controller = function() {
@@ -6,7 +7,8 @@ var controller = function() {
 	var displayHomePage = function(req, res) {
 		Teacher.find({}, function(err, result) {
 			res.render('index', {
-				teachers: result
+				teachers: result,
+				user: req.user
 			})
 		})
 	}
@@ -75,41 +77,111 @@ var controller = function() {
 	}
 	var displayTeacherPage = function (req, res) {
 		var id = req.params.id
-		Teacher.find({}, function(err, teachers) {
+		Teacher.find({}, null, {sort: {date: 1}}, function(err, teachers) {
 			if (err) return console.log(err)
-			Teacher.findById(id, function(err, teacher) {
+			Teacher.findById(id, function(err, teacher) {				
 				if (err) console.log(err)
 				res.render('teacherPage', {
 					teacher: teacher,
-					teachers: teachers
+					teachers: teachers,
+					user: req.user
 				})
 			})
 		})
 		
 	}
-	var displayTeacherAdmin = function (req, res) {
+	var displayAdmin = function (req, res) {
 		res.render('adminTeacher')
 	}
 	var addTeacherToDb = function (req, res) {
 		var newTeacher = new Teacher({
-			name: req.body.name,
+			username: req.body.username,
 			field: req.body.field,
 			img: req.body.img
 		})
-		newTeacher.save(function(err, result) {
-			if (err) console.log('ERROR Happened: ' + err)
-			else console.log(result)
+		Teacher.register(new Teacher(newTeacher), req.body.password, function(err, teacher){
+			if (err) {
+				console.log('ERROR Happened: ' + err)
+			}
+			else {
+				passport.authenticate('local')(function() {})
+				console.log('Save new teacher successfully!')
+			}
+			res.redirect('/')		
 		})
+	}
+	var displayTeacherLogin = function (req, res) {
+		Teacher.find({}, function(err, teachers) {
+			if (err) return console.log(err)
+			res.render('teacherLogin', {
+				teachers: teachers
+			})
+		})
+	}
+	var loginTeacher = function (req, res) {
+		console.log('Logged in as '+req.user.username)
+		res.redirect('/admin/teacher')
+	}
+	var logoutTeacher = function (req, res) {
+		req.logout()
+		console.log('Logged out!')
 		res.redirect('/')
+	} 
+	var displayTeacherAdmin = function(req, res) {
+		Teacher.findById(req.user._id, function(err, teacher) {
+			if (err) return console.log('ERROR HAPPENED: '+err)
+			res.render('teacherAdmin', {
+				teacher: teacher
+			})
+		})
+	}
+	var displayChangePassword = function(req, res) {
+		res.render('changePassword')
+	}
+	var changeTeacherPassword = function (req, res) {
+		var newPassword = req.body.newPassword
+		var oldPassword = req.body.oldPassword
+		Teacher.findById(req.user._id, function(err, teacher) {
+			if (err) console.log('ERROR HAPPENED: ' +err)
+			teacher.changePassword(oldPassword, newPassword, function(err, result) {
+				if (err) {
+					console.log('ERROR HAPPENED: ' + err)
+					res.redirect('/admin/teacher/password')
+				}
+				console.log('Change Password successfully')
+				req.logout()
+				res.redirect('/admin/teacher')
+			})
+		})		
+	}
+	var changeTeacherProfile = function (req, res) {
+		var teacher_id = req.body.teacher_id
+		Teacher.findById(teacher_id, function (err, teacher) {
+			teacher.username = req.body.username
+			teacher.field = req.body.field
+			teacher.img = req.body.img
+			teacher.save(function(err, result) {
+				if (err) console.log(err)
+				res.redirect('/admin/teacher')
+			})
+			
+		})
 	}
 	return {
 		displayHomePage,
-		displayTeacherAdmin,
+		displayAdmin,
 		addTeacherToDb,
 		displayTeacherPage,
 		addNoteToDb,
 		deleteNote,
-		updateNote
+		updateNote,
+		displayTeacherLogin,
+		loginTeacher,
+		logoutTeacher,
+		displayTeacherAdmin,
+		displayChangePassword,
+		changeTeacherPassword,
+		changeTeacherProfile
 	}
 }
 

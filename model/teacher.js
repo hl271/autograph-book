@@ -1,4 +1,5 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose'),
+	passportLocalMongoose = require('passport-local-mongoose')
 var Schema = mongoose.Schema
 
 var NoteSchema = new Schema({
@@ -11,10 +12,13 @@ var NoteSchema = new Schema({
 })
 
 var TeacherSchema = new Schema({
-	name: String,
+	username: String,
+	password: String,
 	field: String,
 	img: String,
 	studentNotes: [NoteSchema]
 })
+
+TeacherSchema.plugin(passportLocalMongoose)
 
 module.exports = mongoose.model('Teacher', TeacherSchema)

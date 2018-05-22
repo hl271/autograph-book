@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The digital class note">
+    <meta name="author" content="Lan Dang">
+    <title>The Autograph Book - FLSS</title>
+
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-3"><%=teacher.username%>
+            <small>Dashboard</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">Teacher</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#"><%=teacher.username%></a>
+            </li>
+        </ol>
+        
+        <div class="row mb-4">
+            <div class="col-md-5 text-center">
+                <img style="width: auto; height: 10rem" class="mx-auto" src=<%=teacher.img%>>			
+            </div>
+            <div class="col-md-7">
+                <h3><%=teacher.username%></h3>
+                <h6>Teaches: <%=teacher.field%></h6>
+                <a href="/admin/teacher/logout" class="btn btn-danger btn-lg m-1">Log out</a>
+                <a href="/admin/teacher/password" class="btn btn-success btn-lg  m-1">Change Password</a>
+                <a role="button" data-toggle="modal" data-target="#profileModal" class="btn btn-secondary btn-lg text-white m-1">Edit Profile</a>
+            </div>
+        </div>
+
+        <h2><%=teacher.username%>'s Notes</h2><hr>
+        <div class="section--notes">
+            <%teacher.studentNotes.reverse().forEach(function(note, index) {%>
+                <div class="card mb-4" id="<%=note._id%>">				  
+                    <div class="card-body">
+                    <h3 class="card-title"><%=note.author%> - <%=note.class%></h5>
+                        <div class="fr-view"><%-note.note%></div>			    
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="row">
+                            <div class="col-md-8">
+                                Last updated: <%=note.date%>
+                            </div>			  	
+                        </div>			    
+                    </div>
+                </div>
+            <%})%>
+        </div>
+
+    </div>
+    <!-- Footer -->
+    <footer class="py-5 mt-3 bg-dark">
+        <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!--MODAL-->
+    <!--Profile modal-->
+    <div class="modal fade" role="dialog" id="profileModal" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/admin/teacher/profile" method="POST">
+                        <div class="form-group">
+                            <label for="name">Teacher's name</label>
+                            <input type="text" name="username" value="<%=teacher.username%>" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="field">Field</label>
+                            <input type="text" class="form-control" value="<%=teacher.field%>" id="field" name="field">
+                        </div>
+                        <div class="form-group">
+                            <label for="img">Image Link</label>
+                            <input type="text" class="form-control" value="<%=teacher.img%>" id="img" name="img">
+                        </div>
+                        <input type="hidden" name="teacher_id" value="<%=teacher._id%>"/>
+                        <button type="submit" class="btn btn-primary">Change your profile</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>        
+    </div>
+    <!-- SCRIPT-->
+	<script type="text/javascript" src="/libs/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

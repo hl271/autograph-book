@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The digital class note">
+    <meta name="author" content="Lan Dang">
+    <title>The Autograph Book - FLSS</title>
+    
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+    <style>
+        label {font-size: 1.25rem}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">Teacher</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">Login</a>
+            </li>
+        </ol>
+        <div id="section--form" class="border border-secondary bg-dark text-white rounded m-3 p-4">
+            <h2 id="send-note">Login as teacher</h2><hr>
+            <form action="/admin/teacher/login" method="POST">
+                <div class="form-group">
+                    <label for="teacher">Select your name</label>
+                    <select id="teacher" class="form-control" name="username" required>
+                        <option selected value="">Choose...</option>
+                        <%teachers.forEach(function(teacher) {%>
+                        <option><%=teacher.username%></option>
+                        <%})%>
+                    </select>
+                    <small style="font-size: 1rem" class="form-text text-white">Don't see your name there? - <a href="/admin/request">Ask the admin</a></small>                    
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Your pasword" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="button" id="passwordToggle">Show Password</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <!-- SCRIPT-->
+	<script type="text/javascript" src="/libs/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $('#passwordToggle').on('click', function() {
+            var passwordToggleVal = $(this).text() === "Show Password" ? "Hide Password" : "Show Password"
+            var passwordType = $('#password').attr('type') === "password" ? "text" : "password"
+            $(this).text(passwordToggleVal)
+            $('#password').attr('type', passwordType)
+        })
+    </script>
+</body>
+</html>

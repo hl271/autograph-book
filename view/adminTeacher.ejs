@@ -13,10 +13,10 @@
 <body>
 	<div class= "container">
 		<h2>Add new teacher</h2><hr>
-		<form action="/admin/teacher" method="POST">
+		<form action="/admin/add/teacher" method="POST">
 		  <div class="form-group">
 		  	<label for="name">Teacher's name</label>
-		  	<input type="text" name="name" class="form-control" id="name">
+		  	<input type="text" name="username" class="form-control" id="name">
 		  </div>
 		  <div class="form-group">
 		    <label for="field">Field</label>
@@ -25,7 +25,8 @@
 		  <div class="form-group">
 		    <label for="img">Image Link</label>
 		    <input type="text" class="form-control" id="img" name="img">
-		  </div>
+			</div>
+			<input type="hidden" name="password" value="000000">
 		  
 		  <button type="submit" class="btn btn-primary">Add New Teacher To Database</button>
 		</form>

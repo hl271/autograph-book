@@ -19,11 +19,34 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.1/css/froala_style.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a href="/" class="navbar-brand">The Autograph Book</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="navbar-nav ml-auto">
+				<%if (!!user) {%>
+					<li class="nav-item">
+							<a href="/admin/teacher" class="nav-link"><%=user.username%>'s Dashboard</a>
+					</li>
+					<li class="nav-item">
+						<a href="/admin/teacher/logout" class="nav-link">Log out</a>
+					</li>
+				<%} else {%>
+					<li class="nav-item">
+							<a href="/admin/teacher/login" class="nav-link">Login as teacher</a>
+					</li>
+				<%}%>
+			</div>
+		</div>
+	</nav>
 	<div class="jumbotron jumbotron-fluid bg-dark text-white">
 	  <div class="container">
 	    <h1 class="display-4">The autograph book</h1>
 	    <p class="lead">All memories are worth cherished..</p>
-	    <a href="#section--form" class="btn btn-outline-light">Say something to your teacher</a>
+			<a href="#section--form" class="btn btn-outline-light mb-2">Say something to your teacher</a> 
 	  </div>
 	</div>
 	<div class="container">		
@@ -36,7 +59,7 @@
 				  <div class="card h-100 text-center">
 				    <img class="card-img-top" src=<%=teacher.img%> alt="Teacher's image">
 				    <div class="card-body">
-				      <h4 class="card-title"><%=teacher.name%></h4>
+				      <h4 class="card-title"><%=teacher.username%></h4>
 				      <h6 class="card-subtitle mb-2 text-muted">Teaches: <%=teacher.field%></h6>
 				      <a href="/teacher/<%=teacher._id%>" class="btn btn-primary">See Notes</a>
 				    </div>				    
@@ -80,7 +103,7 @@
 			    <select id="teacher" class="form-control" name="teacher_id" required>
 			      <option selected value="">Choose...</option>
 			      <%teachers.forEach(function(teacher) {%>
-					<option value=<%=teacher._id%>><%=teacher.name%></option>
+					<option value=<%=teacher._id%>><%=teacher.username%></option>
 			      <%})%>
 			    </select>
 			  </div>
@@ -107,8 +130,10 @@
 	</div>
 	<!-- Footer -->
     <footer class="py-5 mt-3 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+      <div class="container text-center">
+				<p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+				<a href="/admin/teacher/login" class="text-white">Login as teacher</a><br>
+				<a href="/admin" class="text-white">Login as admin</a>
       </div>
       <!-- /.container -->
     </footer>

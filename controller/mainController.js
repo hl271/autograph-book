@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
 	passport = require('passport')
 var Teacher = require('../model/teacher')
+var websiteURL = process.env.WEBSITE_URL || 'https://autograph-book.herokuapp.com/'
+console.log(websiteURL)
 
 var controller = function() {
 
@@ -84,14 +86,20 @@ var controller = function() {
 				res.render('teacherPage', {
 					teacher: teacher,
 					teachers: teachers,
-					user: req.user
+					user: req.user,
+					url: websiteURL
 				})
 			})
 		})
 		
 	}
 	var displayAdmin = function (req, res) {
-		res.render('adminTeacher')
+		Teacher.find({}, function(err, teachers) {
+			if (err) return console.log(err)
+			res.render('adminTeacher', {
+				teachers: teachers
+			})
+		})
 	}
 	var addTeacherToDb = function (req, res) {
 		var newTeacher = new Teacher({
@@ -167,6 +175,17 @@ var controller = function() {
 			
 		})
 	}
+	var deleteTeacher = function(req, res) {
+		var teacher_id = req.body.teacher_id
+		Teacher.findById(teacher_id, function(err, teacher) {
+			if (err) console.log('ERROR HAPPENED: ' +err)
+			teacher.remove(function(err, result) {
+				if (err) console.log('ERROR HAPPENED: ' +err)
+				console.log('Deleted Teacher ' + result.username)
+				res.redirect('/')
+			})
+		})
+	}
 	return {
 		displayHomePage,
 		displayAdmin,
@@ -181,7 +200,8 @@ var controller = function() {
 		displayTeacherAdmin,
 		displayChangePassword,
 		changeTeacherPassword,
-		changeTeacherProfile
+		changeTeacherProfile,
+		deleteTeacher
 	}
 }
 

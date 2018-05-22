@@ -22,6 +22,16 @@
 	</style>
 </head>
 <body>
+
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.0';
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a href="/" class="navbar-brand">The Autograph Book</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,18 +96,26 @@
 				  </div>
 				  <div class="card-footer text-muted">
 				  	<div class="row">
-				  		<div class="col-md-8">
+				  		<div class="col-md-6">
 					  		Last updated: <%=note.date%>
 					  	</div>			  	
-					    <div class="col-md-4">
+					    <div class="col-md-6">
 					    	<button class="btn btn-danger float-right mx-1" data-toggle="modal" data-target="#deleteModal<%=index%>">
 					    		Delete
 					    	</button>
 					    	<button class="btn btn-primary float-right mx-1" data-toggle="modal" data-target="#editModal<%=index%>">
 					    		Edit
 					    	</button>
-					    </div>
-				  	</div>			    
+					    	<button class="btn btn-success float-right mx-1"data-toggle="collapse" data-target="#fbComment<%=note._id%>" aria-expanded="false" aria-controls="fbComment<%=note._id%>">
+					    		Comment
+					    	</button>
+							</div>							
+						</div>
+						<div class="row collapse" id="fbComment<%=note._id%>">
+							<div class="col">
+									<div class="fb-comments" data-href="<%=url%>/admin?<%=note._id%>" data-numposts="3" data-width="100%"></div>
+							</div>
+						</div>			    
 				  </div>
 				</div>
 				<!-- MODALS -->

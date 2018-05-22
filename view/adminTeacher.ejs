@@ -12,24 +12,60 @@
 </head>
 <body>
 	<div class= "container">
+		<h1 class="mt-4 mb-3">Admin Dashboard
+		</h1>
+		<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+						<a href="/">Home</a>
+				</li>
+				<li class="breadcrumb-item">
+						<a href="#">Admin</a>
+				</li>
+		</ol>
 		<h2>Add new teacher</h2><hr>
-		<form action="/admin/add/teacher" method="POST">
-		  <div class="form-group">
-		  	<label for="name">Teacher's name</label>
-		  	<input type="text" name="username" class="form-control" id="name">
-		  </div>
-		  <div class="form-group">
-		    <label for="field">Field</label>
-		    <input type="text" class="form-control" id="field" name="field">
-		  </div>
-		  <div class="form-group">
-		    <label for="img">Image Link</label>
-		    <input type="text" class="form-control" id="img" name="img">
+		<section class="mb-4">
+				<form action="/admin/add/teacher" method="POST">
+					<div class="form-group">
+						<label for="name">Teacher's name</label>
+						<input type="text" name="username" class="form-control" id="name">
+					</div>
+					<div class="form-group">
+						<label for="field">Field</label>
+						<input type="text" class="form-control" id="field" name="field">
+					</div>
+					<div class="form-group">
+						<label for="img">Image Link</label>
+						<input type="text" class="form-control" id="img" name="img">
+					</div>
+					<input type="hidden" name="password" value="000000">
+					
+					<button type="submit" class="btn btn-primary">Add New Teacher To Database</button>
+				</form>
+		</section>
+		
+		<h2>All Teachers</h2><hr>
+		<section class="mb-4">
+			<div class="row">
+				<%teachers.forEach(function(teacher) {%>
+					<div class="col-md-3 mb-4">
+						<div class="card h-100 text-center">
+							<img class="card-img-top" src=<%=teacher.img%> alt="Teacher's image">
+							<div class="card-body">
+								<h4 class="card-title"><%=teacher.username%></h4>
+								<h6 class="card-subtitle mb-2 text-muted">Teaches: <%=teacher.field%></h6>
+								<form action="/admin/delete/teacher" method="POST">
+									<input type="hidden" value="<%=teacher._id%>" name="teacher_id"/>
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
+							</div>				    
+						</div>
+					</div>
+				<%})%>
+				
+				
 			</div>
-			<input type="hidden" name="password" value="000000">
-		  
-		  <button type="submit" class="btn btn-primary">Add New Teacher To Database</button>
-		</form>
+		</section>
+		
 	</div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 # Autograph Book
 <i>Ideal Place to express your feelings toward your beloved teacher. You can find a deployment of the app at <a href="https://autograph-book.herokuapp.com/">https://autograph-book.herokuapp.com</a></i>
 <h2>Languages and Frameworks</h2>
-<p>Nodejs, Expressjs, EJS</p>
+<p>Nodejs, Expressjs, EJS, Bootstrap</p>
 <h2>Main Features</h2>
 <ol>
 	<li>If you're a student:
